@@ -7,7 +7,7 @@ import asyncio
 
 
 class EmbeddingModel:
-    def __init__(self, embeddings_model_name: str = "text-embedding-3-small", batch_size: int = 1024):
+    def __init__(self, embeddings_model_name: str = "text-embedding-3-small", batch_size: int = 1024, dimensions: int = None):
         load_dotenv()
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.async_client = AsyncOpenAI()
@@ -19,13 +19,14 @@ class EmbeddingModel:
             )
         self.embeddings_model_name = embeddings_model_name
         self.batch_size = batch_size
+        self.dimensions = dimensions
 
     async def async_get_embeddings(self, list_of_text: List[str]) -> List[List[float]]:
         batches = [list_of_text[i:i + self.batch_size] for i in range(0, len(list_of_text), self.batch_size)]
         
         async def process_batch(batch):
             embedding_response = await self.async_client.embeddings.create(
-                input=batch, model=self.embeddings_model_name
+                input=batch, model=self.embeddings_model_name, dimensions=self.dimensions if self.dimensions else None
             )
             return [embeddings.embedding for embeddings in embedding_response.data]
         
@@ -37,21 +38,21 @@ class EmbeddingModel:
 
     async def async_get_embedding(self, text: str) -> List[float]:
         embedding = await self.async_client.embeddings.create(
-            input=text, model=self.embeddings_model_name
+            input=text, model=self.embeddings_model_name, dimensions=self.dimensions if self.dimensions else None
         )
 
         return embedding.data[0].embedding
 
     def get_embeddings(self, list_of_text: List[str]) -> List[List[float]]:
         embedding_response = self.client.embeddings.create(
-            input=list_of_text, model=self.embeddings_model_name
+            input=list_of_text, model=self.embeddings_model_name, dimensions=self.dimensions if self.dimensions else None
         )
 
         return [embeddings.embedding for embeddings in embedding_response.data]
 
     def get_embedding(self, text: str) -> List[float]:
         embedding = self.client.embeddings.create(
-            input=text, model=self.embeddings_model_name
+            input=text, model=self.embeddings_model_name, dimensions=self.dimensions if self.dimensions else None
         )
 
         return embedding.data[0].embedding
