@@ -58,7 +58,7 @@ Please evaluate your system on the following questions:
 #### ❓Question #1:
 
 Do the answers appear to be correct and useful?
-##### ✅ Answer:
+##### ✅ Answer: Yes, they are being answered. Even though chatbot if framed as coach it continues to answer these questions as a regular LLM. That's expected as we do not have any guardrails to constraint the response.
 
 ---
 
@@ -73,17 +73,74 @@ Now test your assistant with personal questions it should be able to help with. 
 - "What can I cook with [enter ingredients] in fridge."
 
 ##### Your Prompts and Results:
-1. Prompt:
-   - Result:
-2. Prompt:
-   - Result:
-3. Prompt:
-   - Result:
+1. Prompt: Rewrite the following paragraph in a professional, formal tone…
+I do not want to work on old tech anymore. I resign.
+   - Result:  I hereby tender my resignation, effective immediately, as I seek to pursue opportunities that align more closely with my aspirations for working with contemporary technology.
+2. Prompt: Help me plan a birthday surprise for Mr Narendra Modi
+   - Result:  Planning a birthday surprise for someone as prominent as Mr. Narendra Modi can be both exciting and meaningful. Here are some suggestions that you can consider to create a memorable celebration:
+
+1. **Theme and Concept**:
+   - Decide on a theme that resonates with Mr. Modi's interests, such as traditional Indian culture, sustainability, or technology. This will help guide your planning.
+
+2. **Venue Selection**:
+   - Choose a location that is significant and appropriate, such as a cultural landmark, a historic site, or a well-decorated banquet hall. Ensure the venue can accommodate guests comfortably.
+
+3. **Guest List**:
+   - Compile a list of friends, family members, and colleagues who share a bond with Mr. Modi. Make sure to adhere to any security protocols that might be necessary.
+
+4. **Invitations**:
+   - Send out invitations that reflect the theme. Digital invitations could also be a great and eco-friendly option.
+
+5. **Decorations**:
+   - Decorate the venue with vibrant flowers, traditional Indian decor, and elements that reflect Mr. Modi's contributions to the nation, such as artworks or displays showcasing his achievements.
+
+6. **Food and Beverages**:
+   - Cater a menu that features Mr. Modi's favorite dishes. You could include regional and traditional delicacies to honor his roots. 
+
+7. **Cultural Performances**:
+   - Arrange for live performances such as classical music, folk dance, or even a poetry reading to create an engaging atmosphere. Local artists could be invited to showcase their talents.
+
+8. **Personalized Gifts**:
+   - Consider giving a thoughtful, personalized gift that reflects Mr. Modi's interests or values, such as a book, a piece of art, or something related to his initiatives.
+
+9. **Messages and Tributes**:
+   - Create a video montage or a memory book containing messages and well-wishes from supporters, family members, and notable figures. This can emphasize the impact he has had on people’s lives.
+
+10. **Community Involvement**:
+    - Since Mr. Modi has a strong connection with community welfare, consider incorporating a charitable component to the surprise, such as a donation to a cause he supports or planting trees in his honor.
+
+11. **Security and Protocol**:
+    - Due to the nature of his position, ensure that all necessary security measures are in place. Coordinate with official protocol offices for guidance.
+
+12. **Surprise Element**:
+    - The essence of a surprise is the unexpected. Plan a unique reveal moment that will create an unforgettable memory, like a special guests' appearance or an unexpected performance.
+
+Above all, ensure that the tone of the event is respectful and celebratory, emphasizing unity and gratitude. Good luck with your planning, and remember to keep the spirit of joy and appreciation at the core of your efforts!
+3. Prompt:   What can I cook with nothing in fridge
+   - Result:  When it feels like there’s nothing in the fridge, it can be overwhelming, but let’s see if we can turn that around! Here are a few ideas you might consider, depending on what you have on hand:
+
+1. **Staples:** Check your pantry for staples like rice, pasta, or quinoa. You can make a simple dish by boiling these and pairing them with any leftover sauces or spices.
+
+2. **Eggs:** If you have eggs, they are incredibly versatile. You can scramble, fry, or make an omelet with any leftover veggies or cheese you might have.
+
+3. **Canned Goods:** If you have canned beans, tomatoes, or vegetables, they can be combined to create a hearty soup or stew. Just add some spices for flavor!
+
+4. **Oatmeal or Pancakes:** If you have oats or flour, you can whip up some oatmeal or pancakes. You can add water or milk and top with whatever you can find, like fruit, honey, or nuts.
+
+5. **Toast or Sandwiches:** If you have bread, you can toast it or make a simple sandwich with whatever spreads or toppings you can find around.
+
+6. **Salad:** If you have any vegetables, even just a few, you can make a salad. Add oil, vinegar, or any dressing you might have for flavor.
+
+7. **Smoothies:** If you have fruits, even if they are frozen, you can blend them with yogurt or milk to create a smoothie.
+
+Take a deep breath as you assess what you do have. Sometimes it’s about creativity and making the best of what’s available. You’ve got this!
+
+
 
 #### ❓Question #2:
 
 Are the vibes of this assistant's answers aligned with your vibes? Why or why not?
-##### ✅ Answer:
+##### ✅ Answer: Not really. It assumes I have a serious question and tries its best to answer. Response is not adjusted to match the vide of users. 
 
 ---
 
@@ -95,15 +152,27 @@ Now test your assistant with questions that would require capabilities beyond ba
 - "What time should I leave for the airport?"
 
 ##### Your Prompts and Results:
-1. Prompt:
-   - Result:
-2. Prompt:
-   - Result:
+1. Prompt: What does my schedule look like tomorrow?
+   - Result: I can't access your schedule, but I can help you create a plan for tomorrow! If you share your commitments or tasks you need to accomplish, we can organize them in a way that feels more manageable. Would you like to do that?
+
+
+2. Prompt: What time should I leave for the airport?
+   - Result: To determine what time you should leave for the airport, consider a few factors:
+
+1. **Flight time**: Check your departure time.
+2. **Airport guidelines**: Most airlines recommend arriving 2-3 hours before international flights and 1.5-2 hours for domestic flights.
+3. **Travel time to the airport**: Estimate how long it will take you to get there, factoring in traffic or any potential delays.
+4. **Parking or drop-off time**: If you need to park your car or get dropped off, include that in your plan.
+5. **Security check**: Consider the time you might spend in security lines.
+
+For example, if your domestic flight departs at 3 PM, you might plan to arrive by 1:30 PM, leave your home by 12 PM if it takes you about 30 minutes to get to the airport, and account for any unexpected delays.
+
+Take a deep breath, and remember that having a clear plan will help you feel more at ease. Would you like help organizing any other travel-related tasks?
 
 #### ❓Question #3:
 
 What are some limitations of your application?
-##### ✅ Answer:
+##### ✅ Answer: Its generic in nature and just sitting on top of LLM w/o really specifying any contraint / goal that chatbot should adhere to. A better prompt engineering to ensure LLM has necessary context in terms of what this chatbot is meant for is required to improve.
 
 ---
 
