@@ -1,0 +1,27 @@
+[project]
+name = "12-Certification-Challenge"
+version = "0.1.0"
+description = "Decision Intelligence for Item Discoverability"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+
+dependencies = [
+    "jupyter>=1.1.1",
+    # LangChain stack
+    "langchain>=0.1.17,<0.2.0",
+    "langchain-openai>=0.0.8,<0.1.0",
+    "langchain-experimental>=0.0.56,<0.1.0",
+    # Vector store
+    "qdrant-client>=1.8.2,<1.10.0",
+    # Evaluation
+    "ragas>=0.1.7,<0.2.0",
+    "datasets>=2.18.0,<3.0.0",
+    "rank-bm25>=0.2.2",
+    "python-dotenv>=1.0.0",
+    # LangGraph compatible version
+    "langgraph>=0.0.45,<0.1.0",
+    # Tracing
+    "langsmith>=0.1.0,<0.2.0",
+    "certifi>=2026.1.4",
+    "ipykernel>=7.2.0",
+]
