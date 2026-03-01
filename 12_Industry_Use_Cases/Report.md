@@ -194,3 +194,65 @@ performance?
 
 ------------------------------------------------------------------------
 
+# 🛠️ 2. Solution
+
+## 💡 Proposed Solution (1–2 Paragraphs)
+
+To address the diagnostic gap faced by retail merchants, this project implements an **Agentic Retrieval-Augmented Generation (RAG) system** that combines deterministic signal extraction with structured knowledge retrieval and controlled LLM synthesis.
+
+The system uses LangGraph to orchestrate a multi-step reasoning workflow: first extracting quantitative performance signals, then retrieving relevant diagnostic knowledge from a vector database, optionally invoking external strategic context, and finally synthesizing a structured, evidence-based recommendation. This architecture ensures that diagnoses are grounded in item-level data while leveraging domain knowledge to standardize intervention logic. The result is a reproducible, explainable decision-support layer rather than an unconstrained conversational system.
+
+------------------------------------------------------------------------
+
+## 🏗️ Infrastructure Overview
+
+The system architecture is illustrated in the Mermaid diagram above. It consists of the following components:
+
+- **Next.js Frontend** — User interface for submitting diagnostic queries.
+- **FastAPI Backend** — Serves as the API layer connecting frontend requests to the agent.
+- **LangGraph Orchestrator** — Manages deterministic node execution and conditional routing.
+- **Pinecone Vector Database** — Stores item narratives and intervention knowledge with metadata filtering.
+- **OpenAI GPT-4o** — Performs structured reasoning and synthesis.
+- **Cohere Rerank (Advanced Retrieval)** — Improves context selection quality.
+- **Tavily API** — Provides optional external strategic context.
+- **RAGAS (Offline Evaluation)** — Quantitatively evaluates faithfulness, relevance, and recall.
+
+### Tooling Rationale (One Sentence Each)
+
+- **LangGraph** — Chosen for explicit control over multi-step agent workflows.
+- **Pinecone** — Enables scalable vector storage with metadata filtering for deterministic retrieval.
+- **OpenAI Embeddings** — Provide semantic search capability for knowledge grounding.
+- **Cohere Rerank** — Improves retrieval precision by reordering candidate chunks using cross-encoder scoring.
+- **GPT-4o** — Balances reasoning quality and cost efficiency for structured synthesis.
+- **FastAPI** — Lightweight, production-ready backend framework.
+- **Next.js** — Simple, modern frontend framework for rapid deployment.
+- **RAGAS** — Provides objective, repeatable evaluation of RAG performance.
+
+------------------------------------------------------------------------
+
+## 🔎 RAG vs Agent Components
+
+### 📚 RAG Components
+
+The Retrieval-Augmented Generation (RAG) layer consists of:
+
+- Knowledge document embedding and indexing in Pinecone  
+- Metadata-filtered similarity search  
+- Cohere cross-encoder reranking  
+- Context injection into the synthesis prompt  
+
+This layer ensures that the model’s responses are grounded in retrieved evidence rather than parametric memory alone.
+
+### 🤖 Agent Components
+
+The agent layer consists of:
+
+- Deterministic item ID extraction  
+- Signal extraction from item narratives  
+- Conditional routing (strategic vs operational query detection)  
+- Optional Tavily external search invocation  
+- Structured synthesis node execution  
+
+Unlike a simple RAG pipeline, the agent enforces workflow control, ensuring reproducible reasoning steps before generation.
+
+------------------------------------------------------------------------
