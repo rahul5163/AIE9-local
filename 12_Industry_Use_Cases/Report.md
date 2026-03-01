@@ -11,20 +11,20 @@ graph TD
     classDef eval fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 
     %% Nodes
-    User([User Question]):::user
-    FastAPI[FastAPI Endpoint]:::flow
+    User(["User Question"]):::user
+    FastAPI["FastAPI Endpoint"]:::flow
     
-    subgraph LangGraph_Orchestrator [LangGraph Agent Orchestration]
+    subgraph Agent_Orchestrator ["LangGraph Agent Orchestration"]
         Planner["Planner Node (Query Classification)"]
-        ItemRet["Item Retrieval (Metadata: type=item)"]
+        ItemRet["Item Retrieval (Metadata Filter: item)"]
         SignalExt["Signal Extraction (Structured Metrics)"]
-        KnowRet["Knowledge Retrieval (Metadata: type=knowledge)"]
-        External{"Strategic?"} 
+        KnowRet["Knowledge Retrieval (Metadata Filter: knowledge)"]
+        External{"Is Strategic?"} 
         Tavily["Tavily API (External Search)"]
         LLMSynth["Synthesis Node (GPT-4o)"]
     end
 
-    Pinecone[("Pinecone Vector DB (AWS us-east-1)")]:::storage
+    Pinecone[("Pinecone Vector DB (AWS)")]:::storage
     LangSmith(["LangSmith (Tracing)"]):::eval
     RAGAS(["RAGAS (Eval Metrics)"]):::eval
 
@@ -43,7 +43,7 @@ graph TD
     LLMSynth --> FastAPI
     
     %% Monitoring/Eval
-    LangGraph_Orchestrator -.-> LangSmith
+    Agent_Orchestrator -.-> LangSmith
     LLMSynth -.-> RAGAS
 
 
