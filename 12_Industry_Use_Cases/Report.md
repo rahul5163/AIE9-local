@@ -77,10 +77,10 @@ assortment mix, and improving item-level performance. However,
 diagnosing underperformance is complex. An item with low sales could be
 suffering from:
 
--   Poor discoverability\
--   Weak intrinsic demand\
--   Cannibalization from similar SKUs\
--   Pricing issues\
+-   Poor discoverability
+-   Weak intrinsic demand
+-   Cannibalization from similar SKUs
+-   Pricing issues
 -   Structural weakness
 
 Each root cause requires a different intervention.
@@ -88,10 +88,10 @@ Each root cause requires a different intervention.
 Today, merchants rely on fragmented dashboards, spreadsheets, and ad hoc
 analysis. This creates:
 
--   Time-consuming manual investigation\
--   Inconsistent diagnostic logic across teams\
+-   Time-consuming manual investigation
+-   Inconsistent diagnostic logic across teams
 -   Risk of misclassification (e.g., delisting an item that simply needs
-    visibility)\
+    visibility)
 -   Reactive rather than structured decision-making
 
 A systematic AI-driven diagnostic layer reduces cognitive load,
@@ -104,18 +104,18 @@ standardizes logic, and enables faster, evidence-based interventions.
 This system focuses specifically on diagnosing item underperformance
 using:
 
--   **Visibility signals** --- impressions, rank, CTR\
--   **Demand signals** --- conversion rate, sales volume\
--   **Cannibalization signals** --- similarity overlap score\
+-   **Visibility signals** --- impressions, rank, CTR
+-   **Demand signals** --- conversion rate, sales volume
+-   **Cannibalization signals** --- similarity overlap score
 -   **Strategic risk framing** --- via external search context
 
 ### ❌ Out of Scope
 
 This system does *not*:
 
--   Forecast demand\
--   Optimize pricing\
--   Manage supply chain\
+-   Forecast demand
+-   Optimize pricing
+-   Manage supply chain
 -   Execute operational interventions
 
 It is a **decision-support diagnostic layer**, not an execution engine.
@@ -188,8 +188,8 @@ performance?
 
 **Expected Agent Behavior:**
 
--   Tavily external search invocation\
--   Strategic risk framing\
+-   Tavily external search invocation
+-   Strategic risk framing
 -   Structured diagnostic output including business risk commentary
 
 ------------------------------------------------------------------------
