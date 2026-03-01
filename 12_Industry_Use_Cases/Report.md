@@ -1,6 +1,6 @@
 # 🏗️ System Architecture: Agentic RAG for Diagnostics
 
-This architecture leverages **LangGraph** to move beyond linear RAG, allowing for conditional logic and multi-step reasoning to diagnose business performance metrics.
+This architecture leverages **LangGraph v0.6.7** to orchestrate a deterministic diagnostic flow, utilizing metadata-filtered retrieval and conditional external search.
 
 ```mermaid
 graph TD
@@ -14,35 +14,35 @@ graph TD
     User([User Question]):::user
     FastAPI[FastAPI Endpoint]:::flow
     
-    subgraph LangGraph_Orchestrator [LangGraph Agent v0.6.7]
-        Planner[Planner Node]
-        ItemRet[Item Retrieval Node]
-        SignalExt[Signal Extraction Node]
-        KnowRet[Knowledge Retrieval Node]
-        External{Strategic?} 
-        Tavily[Tavily API Node]
-        LLMSynth[LLM Synthesis Node: GPT-4o]
+    subgraph LangGraph_Orchestrator [LangGraph Agent Orchestration]
+        Planner["Planner Node (Query Classification)"]
+        ItemRet["Item Retrieval (Metadata: type=item)"]
+        SignalExt["Signal Extraction (Structured Metrics)"]
+        KnowRet["Knowledge Retrieval (Metadata: type=knowledge)"]
+        External{"Strategic?"} 
+        Tavily["Tavily API (External Search)"]
+        LLMSynth["Synthesis Node (GPT-4o)"]
     end
 
-    Pinecone[(Pinecone Vector DB<br/>Metadata: Item vs Knowledge)]:::storage
-    LangSmith([LangSmith Tracing]):::eval
-    RAGAS([RAGAS Evaluation]):::eval
+    Pinecone[("Pinecone Vector DB (AWS us-east-1)")]:::storage
+    LangSmith(["LangSmith (Tracing)"]):::eval
+    RAGAS(["RAGAS (Eval Metrics)"]):::eval
 
     %% Relationships
     User --> FastAPI
     FastAPI --> Planner
     Planner --> ItemRet
-    ItemRet <--> Pinecone
+    ItemRet --- Pinecone
     ItemRet --> SignalExt
     SignalExt --> KnowRet
-    KnowRet <--> Pinecone
+    KnowRet --- Pinecone
     KnowRet --> External
-    External -- Yes --> Tavily
-    External -- No --> LLMSynth
+    External -- "Yes" --> Tavily
+    External -- "No" --> LLMSynth
     Tavily --> LLMSynth
     LLMSynth --> FastAPI
     
-    %% Monitoring
+    %% Monitoring/Eval
     LangGraph_Orchestrator -.-> LangSmith
     LLMSynth -.-> RAGAS
 
