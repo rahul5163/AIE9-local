@@ -3,6 +3,24 @@
      height="auto"/>
 </p>
 
+
+---
+
+# 📊 Executive Summary: Agentic RAG for Retail Item Diagnostics
+
+## 🏗️ 3-Block Architecture Overview
+
+| ❓ LEFT: The Challenge | 🏗️ CENTER: Solution Architecture | 📊 RIGHT: Measured Impact |
+|:--- |:--- |:--- |
+| **Retail merchants lack a structured way to diagnose item underperformance.** | **Deterministic + Retrieval + Controlled Generation** | **RAGAS Evaluation (Baseline vs. Optimized)** |
+| ❌ **Manual Analysis:** Time-intensive data pivoting. | 1. **Signal Extraction:** Parse raw CTR/Conv metrics. | • **Precision:** 1.0 (via Metadata Filtering) |
+| ❌ **Inconsistent Logic:** Varying diagnostic rules. | 2. **Knowledge Retrieval:** Pinecone (type=knowledge). | • **Recall:** ↑ +0.078 improvement. |
+| ❌ **Misclassification:** High risk of "False Positives." | 3. **Rerank:** Cohere Cross-Encoder validation. | • **Faithfulness:** Quantifiably increased. |
+| ❌ **Reactive Decisions:** No proactive risk detection. | 4. **Synthesis:** Structured GPT-4o Diagnosis. | **Insight:** Reranking improved coverage without noise. |
+
+---
+
+
 ## <h1 align="center" id="heading">Session 12: Industry Use Cases</h1>
 | 📰 Session Sheet | ⏺️ Recording     | 🖼️ Slides        | 👨‍💻 Repo         | 📝 Homework      | 📁 Feedback       |
 |:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
