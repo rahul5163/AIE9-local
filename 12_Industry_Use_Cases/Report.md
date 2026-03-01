@@ -636,3 +636,14 @@ The primary impact was improved recall, demonstrating that reranking more effect
 Overall, the advanced retrieval technique enhanced the system’s ability to retrieve appropriate context, leading to more accurate and better-grounded diagnostic outputs.
 
 ------------------------------------------------------------------------
+
+# 🔮 7. Next Steps
+
+The current system uses **Dense Vector Retrieval + Cohere Reranking**, which demonstrably improved recall and grounding quality compared to baseline dense retrieval.
+
+For Demo Day, I plan to retain the **Dense + Rerank configuration** because:
+
+- It showed measurable improvement in context recall and faithfulness.
+- Precision remained perfect (1.0), indicating stable retrieval quality.
+- It provides a strong balance between performance gains and architectural simplicity.
+------------------------------------------------------------------------
