@@ -6,17 +6,26 @@
 
 ---
 
-# 📊 Executive Summary: Agentic RAG for Retail Item Diagnostics
+# 📊 Executive Summary: 🚀 Agentic RAG: Retail Item Diagnostics
 
-## 🏗️ 3-Block Architecture Overview
+```mermaid
+flowchart LR
+    %% Style Definitions
+    classDef problem fill:#ffecec,stroke:#d32f2f,stroke-width:2px,color:#000;
+    classDef system fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000;
+    classDef impact fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000;
 
-| ❓ LEFT: The Challenge | 🏗️ CENTER: Solution Architecture | 📊 RIGHT: Measured Impact |
-|:--- |:--- |:--- |
-| **Retail merchants lack a structured way to diagnose item underperformance.** | **Deterministic + Retrieval + Controlled Generation** | **RAGAS Evaluation (Baseline vs. Optimized)** |
-| ❌ **Manual Analysis:** Time-intensive data pivoting. | 1. **Signal Extraction:** Parse raw CTR/Conv metrics. | • **Precision:** 1.0 (via Metadata Filtering) |
-| ❌ **Inconsistent Logic:** Varying diagnostic rules. | 2. **Knowledge Retrieval:** Pinecone (type=knowledge). | • **Recall:** ↑ +0.078 improvement. |
-| ❌ **Misclassification:** High risk of "False Positives." | 3. **Rerank:** Cohere Cross-Encoder validation. | • **Faithfulness:** Quantifiably increased. |
-| ❌ **Reactive Decisions:** No proactive risk detection. | 4. **Synthesis:** Structured GPT-4o Diagnosis. | **Insight:** Reranking improved coverage without noise. |
+    %% Nodes with HTML formatting for clean rendering
+    Problem["<b>❓ The Challenge</b><br/>Manual & Inconsistent<br/>Item Diagnosis<br/><hr/>• Fragmented Dashboards<br/>• Reactive Decisions<br/>• Misclassification Risk"]:::problem
+
+    System["<b>🏗️ Agentic RAG System</b><br/>Deterministic + Controlled<br/><hr/>1. Extract Item Signals<br/>2. Retrieve Knowledge<br/>3. Rerank (Cohere)<br/>4. Conditional Search<br/>5. Structured Diagnosis"]:::system
+
+    Impact["<b>📊 Measured Impact</b><br/>RAGAS Evaluation<br/><hr/><b>Recall:</b> 0.79 → 0.85<br/><b>Precision:</b> 1.00<br/><b>Faithfulness:</b> ↑ 0.38<br/><hr/>✔ Improved Grounding<br/>✔ Zero Added Noise"]:::impact
+
+    %% Flow
+    Problem --> System --> Impact
+```
+
 
 ---
 
