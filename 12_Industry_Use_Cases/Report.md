@@ -358,3 +358,146 @@ The 100-character overlap:
 This strategy ensures that retrieval quality remains sensitive to noise in the knowledge base, making reranking performance measurable and evaluation meaningful.
 
 ------------------------------------------------------------------------
+
+# 🚀 4. Build End-to-End Prototype
+
+An end-to-end prototype was built and deployed locally, consisting of:
+
+- A Next.js frontend (user interface)
+- A FastAPI backend (API layer)
+- A LangGraph-based agent orchestration layer
+- Pinecone vector storage
+- Offline RAGAS evaluation scripts
+
+The system supports full request–response flow from user input to structured diagnostic output.
+
+------------------------------------------------------------------------
+
+## 🏗️ Codebase Structure
+
+The repository is organized to clearly separate baseline, improved, and evaluation components.
+
+### 📁 Backend (Core Logic)
+
+Location:
+`backend/`
+
+Contains:
+
+- `main.py` — FastAPI application entry point
+- `app/` — Agent logic and retrieval components
+- `evals/` — RAGAS evaluation scripts
+- `data/` — Synthetic datasets and knowledge base
+
+---
+
+### 🔹 Agent Versions
+
+Two retrieval configurations are implemented for controlled experimentation:
+
+- `backend/app/v1_baseline/`
+  - `agent.py`
+  - `retrievers.py`
+  - Dense retrieval baseline
+
+- `backend/app/v2_rerank/`
+  - `agent.py`
+  - `retrievers.py`
+  - Dense retrieval + Cohere reranking
+
+This separation enables clean evaluation comparisons without cross-contamination.
+
+---
+
+### 🔹 Data Layer
+
+Location:
+`backend/data/`
+
+Includes:
+
+- `item_cases_narrative.json` — Item performance narratives
+- `intervention_kb.json` — Clean knowledge base
+- `noisy_intervention_kb.json` — Noise-augmented KB
+- `synthetic_evaluation_set.json` — Evaluation test cases
+
+---
+
+### 🔹 Evaluation Scripts
+
+Location:
+`backend/evals/`
+
+- `run_ragas_v1.py` — Baseline evaluation
+- `run_ragas_v2.py` — Rerank evaluation
+- `results/` — Stored metric outputs (JSON + CSV)
+
+This enables reproducible, offline metric comparison using RAGAS.
+
+---
+
+### 🎨 Frontend
+
+Location:
+`frontend/`
+
+Built using Next.js.
+
+Provides:
+
+- Text input for item-level diagnostic queries
+- Structured rendering of diagnostic output
+- Localhost deployment at `http://localhost:3000`
+
+------------------------------------------------------------------------
+
+## ▶️ Local Deployment Instructions
+
+### Backend
+
+From project root:
+
+```bash
+uv run uvicorn backend.main:app --host 0.0.0.0 --port 10000
+```
+
+API available at:
+
+```
+http://0.0.0.0:10000/docs
+```
+
+---
+
+### Frontend
+
+From `frontend/` directory:
+
+```bash
+npm run dev
+```
+
+Frontend available at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🔁 End-to-End Flow
+
+1. User submits diagnostic question in Next.js frontend.
+2. FastAPI receives request and forwards to LangGraph agent.
+3. Agent performs:
+   - Item lookup
+   - Signal extraction
+   - Knowledge retrieval (with reranking in v2)
+   - Optional Tavily external search
+4. GPT-4o synthesizes structured diagnosis.
+5. Response returned to frontend.
+6. Offline evaluation conducted separately via RAGAS.
+
+This confirms a fully functional, locally deployed, end-to-end diagnostic system.
+
+------------------------------------------------------------------------
