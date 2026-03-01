@@ -206,7 +206,7 @@ The system uses LangGraph to orchestrate a multi-step reasoning workflow: first 
 
 ## 🏗️ Infrastructure Overview
 
-The system architecture is illustrated in the Mermaid diagram above. It consists of the following components:
+The system architecture is illustrated in the **Mermaid diagram** above. It consists of the following components:
 
 - **Next.js Frontend** — User interface for submitting diagnostic queries.
 - **FastAPI Backend** — Serves as the API layer connecting frontend requests to the agent.
@@ -217,7 +217,7 @@ The system architecture is illustrated in the Mermaid diagram above. It consists
 - **Tavily API** — Provides optional external strategic context.
 - **RAGAS (Offline Evaluation)** — Quantitatively evaluates faithfulness, relevance, and recall.
 
-### Tooling Rationale (One Sentence Each)
+### Tooling Rationale
 
 - **LangGraph** — Chosen for explicit control over multi-step agent workflows.
 - **Pinecone** — Enables scalable vector storage with metadata filtering for deterministic retrieval.
@@ -254,5 +254,107 @@ The agent layer consists of:
 - Structured synthesis node execution  
 
 Unlike a simple RAG pipeline, the agent enforces workflow control, ensuring reproducible reasoning steps before generation.
+
+------------------------------------------------------------------------
+
+# 📦 3. Dealing with the Data
+
+## 🗂️ Data Sources and External APIs
+
+## 🗃️ Data Model Overview
+
+```mermaid
+graph TD
+    classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef storage fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+
+    ItemJSON["Item Narratives (JSON)"]:::data
+    KBJSON["Intervention KB (Noisy JSON)"]:::data
+
+    Embed["OpenAI Embeddings"]:::process
+
+    Pinecone[("Pinecone Vector DB")]:::storage
+
+    ItemMeta["Metadata: type=item"]:::process
+    KBMeta["Metadata: type=knowledge"]:::process
+
+    ItemJSON --> Embed --> Pinecone
+    KBJSON --> Embed --> Pinecone
+
+    ItemMeta --> Pinecone
+    KBMeta --> Pinecone
+```
+
+This system uses three primary data sources and one external API:
+
+### 1️⃣ Item Performance Narratives (Synthetic Dataset)
+
+- Contains structured textual descriptions of item-level performance.
+- Includes quantitative signals such as impressions, rank, CTR, conversion rate, sales, and overlap score.
+- Stored in JSON format and embedded into Pinecone with metadata tag `type=item`.
+
+**Purpose:**  
+Provides deterministic diagnostic signals used to extract structured performance metrics before synthesis.
+
+---
+
+### 2️⃣ Intervention Knowledge Base (Noisy Diagnostic KB)
+
+- Contains domain knowledge articles describing intervention logic (re-ranking, delisting, promotion, cannibalization).
+- Augmented with intentionally irrelevant noise documents to stress-test retrieval quality.
+- Stored in JSON format and embedded into Pinecone with metadata tag `type=knowledge`.
+
+**Purpose:**  
+Acts as the grounding layer for RAG, enabling the model to anchor recommendations in explicit diagnostic logic rather than relying on parametric memory.
+
+---
+
+### 3️⃣ Pinecone Vector Database
+
+- Stores embeddings for both item narratives and knowledge documents.
+- Uses metadata filtering to separate `item` and `knowledge` retrieval paths.
+- Supports top-k dense retrieval followed by reranking.
+
+**Purpose:**  
+Enables scalable semantic retrieval and structured context selection.
+
+---
+
+### 4️⃣ Tavily API (External Strategic Context)
+
+- Invoked only for strategic queries (e.g., long-term risk framing).
+- Provides external market or industry context.
+
+**Purpose:**  
+Expands the system beyond internal knowledge when strategic framing is required, while remaining optional and conditionally routed.
+
+------------------------------------------------------------------------
+
+## ✂️ Default Chunking Strategy
+
+Knowledge base documents are chunked using:
+
+- **Chunk Size:** 500 characters  
+- **Chunk Overlap:** 100 characters  
+- **Splitter:** RecursiveCharacterTextSplitter  
+
+Item narratives are not aggressively chunked due to their small size and structured nature.
+
+---
+
+### 🧠 Why This Chunking Strategy?
+
+The chunk size of 500 characters balances two competing objectives:
+
+1. **Preserve semantic coherence** — Ensures that each chunk retains meaningful diagnostic logic.
+2. **Enable precise retrieval** — Prevents large, overly broad documents from dominating similarity search results.
+
+The 100-character overlap:
+
+- Reduces boundary information loss.
+- Preserves continuity of diagnostic rules across chunk splits.
+
+This strategy ensures that retrieval quality remains sensitive to noise in the knowledge base, making reranking performance measurable and evaluation meaningful.
 
 ------------------------------------------------------------------------
