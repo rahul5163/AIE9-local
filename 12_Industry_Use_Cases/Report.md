@@ -22,7 +22,7 @@ graph TD
         LLMSynth["Synthesis Node (GPT-4o)"]
     end
 
-    Pinecone[("Pinecone Vector DB (AWS Serverless)")]:::storage
+    Pinecone[("Pinecone Vector DB")]:::storage
     LangSmith(["LangSmith (Tracing & Debugging)"]):::eval
     RAGAS(["RAGAS Evaluation (Offline)"]):::eval
 
