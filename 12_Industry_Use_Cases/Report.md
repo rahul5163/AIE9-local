@@ -47,4 +47,150 @@ graph TD
     LLMSynth --> FastAPI
 
     Agent_Orchestrator -.-> LangSmith
-    FastAPI -.-> RAGAS
+    FastAPI -.-> RAGAS'
+```
+
+------------------------------------------------------------------------
+
+# 🧩 1. Defining the Problem, Audience, and Scope
+
+## 🧠 1-Sentence Problem Statement
+
+Retail merchants lack a structured, data-driven way to diagnose why an
+item is underperforming, forcing them to rely on manual analysis and
+intuition instead of systematic decision intelligence.
+
+------------------------------------------------------------------------
+
+## 👤 Target Audience
+
+**Primary Users:**\
+Retail Category Merchants / Merchandising Managers responsible for
+assortment optimization and revenue performance.
+
+------------------------------------------------------------------------
+
+## 📉 Why This Is a Real Problem
+
+Retail merchants are accountable for driving category growth, optimizing
+assortment mix, and improving item-level performance. However,
+diagnosing underperformance is complex. An item with low sales could be
+suffering from:
+
+-   Poor discoverability\
+-   Weak intrinsic demand\
+-   Cannibalization from similar SKUs\
+-   Pricing issues\
+-   Structural weakness
+
+Each root cause requires a different intervention.
+
+Today, merchants rely on fragmented dashboards, spreadsheets, and ad hoc
+analysis. This creates:
+
+-   Time-consuming manual investigation\
+-   Inconsistent diagnostic logic across teams\
+-   Risk of misclassification (e.g., delisting an item that simply needs
+    visibility)\
+-   Reactive rather than structured decision-making
+
+A systematic AI-driven diagnostic layer reduces cognitive load,
+standardizes logic, and enables faster, evidence-based interventions.
+
+------------------------------------------------------------------------
+
+## 🎯 Scope of This Application
+
+This system focuses specifically on diagnosing item underperformance
+using:
+
+-   **Visibility signals** --- impressions, rank, CTR\
+-   **Demand signals** --- conversion rate, sales volume\
+-   **Cannibalization signals** --- similarity overlap score\
+-   **Strategic risk framing** --- via external search context
+
+### ❌ Out of Scope
+
+This system does *not*:
+
+-   Forecast demand\
+-   Optimize pricing\
+-   Manage supply chain\
+-   Execute operational interventions
+
+It is a **decision-support diagnostic layer**, not an execution engine.
+
+------------------------------------------------------------------------
+
+# 🧪 Evaluation Question Set (Input--Output Pairs)
+
+These represent realistic merchant queries used to test the system.
+
+------------------------------------------------------------------------
+
+## 1️⃣ Discoverability Scenario
+
+**Input:**\
+\> Diagnose ITEM_014 and recommend the best action.
+
+**Expected Diagnosis Category:**\
+Discoverability
+
+**Expected Primary Action:**\
+Re-ranking or increased exposure
+
+------------------------------------------------------------------------
+
+## 2️⃣ Demand Weakness Scenario
+
+**Input:**\
+\> Why is ITEM_021 underperforming despite strong impressions?
+
+**Expected Diagnosis Category:**\
+Demand Weakness
+
+**Expected Primary Action:**\
+Content, pricing, or value repositioning
+
+------------------------------------------------------------------------
+
+## 3️⃣ Cannibalization Scenario
+
+**Input:**\
+\> Is ITEM_032 suffering from cannibalization?
+
+**Expected Diagnosis Category:**\
+Cannibalization
+
+**Expected Primary Action:**\
+Assortment rationalization
+
+------------------------------------------------------------------------
+
+## 4️⃣ Structural Weakness Scenario
+
+**Input:**\
+\> What is wrong with ITEM_001?
+
+**Expected Diagnosis Category:**\
+Structural Weakness
+
+**Expected Primary Action:**\
+Deeper review or potential delisting test
+
+------------------------------------------------------------------------
+
+## 5️⃣ Strategic Query (Agent Behavior Test)
+
+**Input:**\
+\> What long-term strategic risk does ITEM_001 pose to category
+performance?
+
+**Expected Agent Behavior:**
+
+-   Tavily external search invocation\
+-   Strategic risk framing\
+-   Structured diagnostic output including business risk commentary
+
+------------------------------------------------------------------------
+
