@@ -1,90 +1,52 @@
+# 🏗️ System Architecture: Agentic RAG for Diagnostics
 
+This architecture leverages **LangGraph** to move beyond linear RAG, allowing for conditional logic and multi-step reasoning to diagnose business performance metrics.
 
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#E3F2FD', 'edgeLabelBackground':'#FFFFFF', 'tertiaryColor': '#F5F5F5'}}}%%
+```mermaid
 graph TD
-    %% Define Nodes and Styles
-    classDef user fill:#E1F5FE,stroke:#01579B,stroke-width:2px;
-    classDef endpoint fill:#E8F5E9,stroke:#1B5E20,stroke-width:2px;
-    classDef orchestrator fill:#FFF3E0,stroke:#E65100,stroke-width:2px;
-    classDef node fill:#ECEFF1,stroke:#37474F,stroke-width:1px,rx:5,ry:5;
-    classDef db fill:#FCE4EC,stroke:#880E4F,stroke-width:2px;
-    classDef external fill:#F3E5F5,stroke:#4A148C,stroke-width:2px;
-    classDef llm fill:#FFFDE7,stroke:#FBC02D,stroke-width:2px;
-    classDef observability fill:#E0F2F1,stroke:#00695C,stroke-width:1px,stroke-dasharray: 5 5;
+    %% Define Styles
+    classDef user fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef flow fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef storage fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef eval fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 
-    %% Components
-    User(User)
-    Endpoint[FastAPI Endpoint]
+    %% Nodes
+    User([User Question]):::user
+    FastAPI[FastAPI Endpoint]:::flow
     
-    subgraph LG ["LangGraph Agent Orchestrator"]
-        Planner[Planner Node<br/>(Extract ID, Classify Query)]
-        ItemLookup[Item Lookup Node]
-        SignalExt[Signal Extraction Node<br/>(Parse Metrics)]
-        KnowledgeRet[Knowledge Retrieval Node]
-        ExternalNode[External Retrieval Node<br/>(Conditional)]
-        Synthesis[Synthesis Node<br/>(OpenAI GPT-4o)]
+    subgraph LangGraph_Orchestrator [LangGraph Agent v0.6.7]
+        Planner[Planner Node]
+        ItemRet[Item Retrieval Node]
+        SignalExt[Signal Extraction Node]
+        KnowRet[Knowledge Retrieval Node]
+        External{Strategic?} 
+        Tavily[Tavily API Node]
+        LLMSynth[LLM Synthesis Node: GPT-4o]
     end
 
-    Pinecone((Pinecone Vector DB<br/>AWS us-east-1))
-    Tavily((Tavily Search API))
-    
-    subgraph Eval ["Evaluation & Monitoring"]
-        LangSmith(LangSmith<br/>Tracing & Debugging)
-        RAGAS(RAGAS v0.2.10<br/>Metrics: Faithfulness, Relevancy)
-    end
+    Pinecone[(Pinecone Vector DB<br/>Metadata: Item vs Knowledge)]:::storage
+    LangSmith([LangSmith Tracing]):::eval
+    RAGAS([RAGAS Evaluation]):::eval
 
-    %% Apply Styles
-    class User user;
-    class Endpoint endpoint;
-    class LG orchestrator;
-    class Planner,ItemLookup,SignalExt,KnowledgeRet,ExternalNode node;
-    class Pinecone db;
-    class Tavily,Synthesis external;
-    class LangSmith,RAGAS observability;
+    %% Relationships
+    User --> FastAPI
+    FastAPI --> Planner
+    Planner --> ItemRet
+    ItemRet <--> Pinecone
+    ItemRet --> SignalExt
+    SignalExt --> KnowRet
+    KnowRet <--> Pinecone
+    KnowRet --> External
+    External -- Yes --> Tavily
+    External -- No --> LLMSynth
+    Tavily --> LLMSynth
+    LLMSynth --> FastAPI
+    
+    %% Monitoring
+    LangGraph_Orchestrator -.-> LangSmith
+    LLMSynth -.-> RAGAS
 
-    %% Flow/Connections
-    User -->|Question| Endpoint
-    Endpoint -->|Request| LG
-    
-    %% Internal Agent Flow
-    LG ==> Planner
-    Planner -->|Metadata Filter: item| ItemLookup
-    ItemLookup -->|Raw Data| SignalExt
-    SignalExt -->|Structured Metrics| KnowledgeRet
-    KnowledgeRet -->|Metadata Filter: knowledge| ExternalNode
-    
-    %% External Interactions
-    ItemLookup -.->|Query| Pinecone
-    KnowledgeRet -.->|Query| Pinecone
-    
-    %% Conditional Logic
-    ExternalNode -.->|If Strategic/High Risk| Tavily
-    
-    %% Data Consolidation
-    SignalExt -->|Metrics| Synthesis
-    KnowledgeRet -->|Diagnostic Logic| Synthesis
-    ExternalNode -->|Context| Synthesis
-    
-    %% Output
-    Synthesis -->|Structured Diagnosis Output| Endpoint
-    Endpoint -->|Response| User
 
-    %% Observability Connections
-    LG -.->|Traces| LangSmith
-    Synthesis -.->|Logs| LangSmith
-    Pinecone -.->|Retrieval Logs| LangSmith
-    Synthesis -.->|Output| RAGAS
-    Pinecone -.->|Retrieved Context| RAGAS
-
-    %% Legend
-    subgraph Legend ["Flow Indicators"]
-        direction LR
-        L1[==> Primary Agent Flow]
-        L2[--> Data Flow]
-        L3[-.-> External/Conditional]
-    end
-    Legend ~~~ User
-    
 
 
 
