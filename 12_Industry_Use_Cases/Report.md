@@ -2,6 +2,7 @@
 
 This architecture leverages **LangGraph v0.6.7** to orchestrate a deterministic diagnostic flow, utilizing metadata-filtered retrieval and conditional external search.
 
+```mermaid
 graph TD
     classDef user fill:#f9f9f9,stroke:#333,stroke-width:2px;
     classDef flow fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
