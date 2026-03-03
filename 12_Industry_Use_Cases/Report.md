@@ -1,3 +1,6 @@
+# LOOM
+https://www.loom.com/share/a196cb1eba7145f2ae6226fa67efd228
+
 # 🏗️ System Architecture: Agentic RAG for Diagnostics
 
 This architecture leverages **LangGraph v0.6.7** to orchestrate a deterministic diagnostic flow, utilizing metadata-filtered retrieval and conditional external search.
