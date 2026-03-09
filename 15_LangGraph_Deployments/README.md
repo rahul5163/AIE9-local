@@ -98,7 +98,7 @@ It tells the platform how to build the environment and where are the entry point
 Create your own agent graph! Build a new graph in `app/graphs/` with a custom evaluation node (e.g., a vibe checker, a fact verifier, a summarizer — get creative!). Register it in `langgraph.json`, serve it with `uv run langgraph dev`
 
 ##### Answer:
-
+added vibe check node to the graph. Code updates in apps/graph/vibe_agent.py and langgraph.json.
 
 
 # Ship 🚢
