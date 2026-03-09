@@ -66,14 +66,32 @@ Have fun!
 What is the key architectural difference between the `simple_agent` and `agent_with_helpfulness` graphs? Specifically, explain how the helpfulness evaluation loop works and what mechanisms are in place to prevent it from running indefinitely.
 
 ##### Answer:
+While the simple_agent terminates as soon as the LLM provides a final response (no tool calls), the agent_with_helpfulness intercepts that response for a quality check.  
+In agent_with_helpfulness, Instead of routing to END, the graph routes to a helpfulness node.
+If is_helpful is True, the graph routes to END.
+If False, it appends a "HELPFULNESS:N" message and loops back to the agent node to try again. 
+
+Safety Mechanisms (Preventing Infinite Loops): To ensure the agent doesn't get stuck in a "not helpful" loop forever, after 10 itreations, it injects a "HELPFULNESS:END" flag which when helpful_decision logic sees, terminates the loop.
+
+len(state["messages"]) > 10:
+        return {"messages": [AIMessage(content="HELPFULNESS:END")]}
+
+if any(getattr(m, "content", "") == "HELPFULNESS:END" for m in state["messages"][-1:]):
+    return END
 
 
 
 #### Question 2:
 What is the role of `langgraph.json` in the LangGraph Deployments? Describe each of its key fields and how the platform uses this file to discover and serve your graphs.
 
-##### Answer:
-
+##### Answer: langgraph.json file acts as the manifest for LangGraph Cloud or the Local deployment.
+It tells the platform how to build the environment and where are the entry points for the agents.
+  
+* .env file is used to locate OPENAI API key, data location.
+* dependencues inform the location of pyproject.toml file.
+* graphs provides mapping of Graph IDs to their python import paths (e.g., app.graphs.simple_agent:graph). This is how the platform "discovers" the compiled graph objects,
+* assistants defines high-level "Assistant" entities that use specific graphs.
+* finally we have python_version to speify python version.
 
 
 #### Activity #1:
