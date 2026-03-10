@@ -84,14 +84,18 @@ What is the difference between serverless and dedicated endpoints?
 #### ✅ Answer:
 
 _(insert your answer here)_
+Serverless endpoints are fully managed inference endpoints where compute resources are dynamically allocated by the provider when a request is made. They require no infrastructure management. 
+Dedicated endpoints, on the other hand, provision fixed compute resources such as GPUs that remain allocated to a specific deployment. This guarantees consistent performance, lower latency, and higher token throughput, making them better suited for production systems or high-traffic applications.
+Tradeoff ofcourse is higher cost. 
 
 ### ❓ Question #2:
 
 Why is it important to consider token throughput and latency when choosing an LLM for user-facing applications?
 
 #### ✅ Answer:
+Token throughput and latency directly impact the responsiveness and scalability of user-facing AI applications. Latency determines how quickly the model begins generating a response. High latency can lead to slow interactions and reduced usability in conversational interfaces.
+Token throughput refers to how many tokens a model can generate per second. Higher throughput enables faster completion of responses and allows systems to handle more concurrent users. So depending on the usage of application, as it grows, throughput becomes a very important design consideration.
 
-_(insert your answer here)_
 
 ## Activity 1: RAGAS Evaluation with Cost Analysis
 
@@ -99,11 +103,31 @@ Use RAGAS to evaluate your open-source Fireworks AI powered RAG app against an O
 
 Additionally, instrument both pipelines with **LangSmith** to capture token usage and cost per query. Use LangSmith's tracing and cost dashboards to compare the total cost of running each provider at scale. Include your evaluation results, cost breakdown, and analysis in your Loom video.
 
-## Advanced Activity: Local Models
+--------------------------------
+fireworks ai eval: raga_eval.py
+--------------------------------
 
-Swap out the Fireworks AI endpoints for **locally-running open-source models** using [Ollama](https://ollama.com/) or another local inference server of your choice. Run both your embedding model and your chat model locally, and rebuild the RAG pipeline on top of them.
+{'faithfulness': 0.5417, 'answer_relevancy': 0.9356, 'context_precision': 0.7500, 'context_recall': 0.4000}
 
-- Compare quality and latency between the local setup and your Fireworks AI hosted endpoint.
-- Reflect: what are the trade-offs of local models vs. managed endpoints in a production setting?
 
-Include your findings and a demo in your Loom video.
+* faithfulness (0.5417): About half of the answer content is grounded in retrieved context
+* answer_relevancy(0.9356): Answers are highly relevant to the user question
+* context_precision(0.7500): Most retrieved chunks are useful
+* context_recall(0.4000): Retriever is missing some relevant information
+
+--------------------------------
+open ai eval: raga_eval_openai.py
+--------------------------------
+
+{'faithfulness': 0.7667, 'answer_relevancy': 0.9027, 'context_precision': 1.0000, 'context_recall': 1.0000}
+
+* faithfulness (0.7667): About half of the answer content is grounded in retrieved context
+* answer_relevancy(0.9027): Answers are highly relevant to the user question
+* context_precision(1.0000): Most retrieved chunks are useful
+* context_recall(1.0000): Retriever is missing some relevant information
+
+
+
+
+
+Conclusion: The initial RAG evaluation showed strong answer relevancy (0.94) but lower faithfulness (0.54), indicating that the model sometimes generated content not fully grounded in the retrieved context. Retrieval performance was the primary bottleneck, with context recall at 0.40, suggesting that the retriever failed to surface some relevant information. When evaluating with curated contexts using OpenAI as the judge model, faithfulness improved significantly to 0.77 while context precision and recall reached 1.0, confirming that generation quality improves when the model receives complete and relevant context. These results suggest that improving retrieval quality would likely yield the largest performance gains for the system.

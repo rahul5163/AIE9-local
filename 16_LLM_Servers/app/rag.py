@@ -26,6 +26,7 @@ from langchain_qdrant import QdrantVectorStore
 from langgraph.graph import START, StateGraph
 
 
+
 def _tiktoken_len(text: str) -> int:
     """Return token length using tiktoken; used for chunk length measurement."""
     tokens = tiktoken.encoding_for_model("gpt-4o").encode(text)
@@ -90,6 +91,8 @@ def _build_rag_graph(data_dir: str):
         "Only use the provided context to answer the query. If you do not know the answer, or it's not contained in the provided context respond with \"I don't know\""
     )
     chat_prompt = ChatPromptTemplate.from_messages([("human", human_template)])
+
+    
     generator_llm = ChatOpenAI(
         model=os.environ.get("FIREWORKS_CHAT_MODEL", "accounts/fireworks/models/gpt-oss-20b"),
         openai_api_key=os.environ["FIREWORKS_API_KEY"],
@@ -106,6 +109,7 @@ def _build_rag_graph(data_dir: str):
             {"query": state["question"], "context": state.get("context", [])}
         )
         return {"response": response_text}  # type: ignore
+
 
     graph_builder = StateGraph(_RAGState)
     graph_builder = graph_builder.add_sequence([retrieve, generate])
